@@ -4,18 +4,7 @@
 
 /**
  * Configuration only used for development.
- *
- *
- * Table of Contents:
- *
- * Dependencies
- * Development Server
- * SCSS
- * Config Development
  */
-
-// Dependencies
-// =============================================================================
 
 // Configs
 const settings = require('./webpack.settings.js');
@@ -27,7 +16,6 @@ const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 
 // Plugins
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 // Development Server
@@ -35,22 +23,20 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const devServer = () => {
   return {
-    public: settings.developmentServer.public(),
     host: settings.developmentServer.host(),
     port: settings.developmentServer.port(),
     https: !!parseInt(settings.developmentServer.https(), 10),
-    contentBase: path.resolve(__dirname, settings.paths.src.base),
-    watchContentBase: true,
-    watchOptions: {
-      poll: settings.developmentServer.poll(),
-      ignored: /node_modules/
+    static: {
+      directory: path.resolve(__dirname, './src/'),
+      publicPath: '/',
+      watch: {
+        poll: settings.developmentServer.poll(),
+        ignored: /node_modules/
+      }
     },
     open: true,
     hot: true,
-    hotOnly: true,
-    quiet: true,
     historyApiFallback: true,
-    disableHostCheck: true,
     headers: {
       'Access-Control-Allow-Origin': '*'
     }
@@ -63,7 +49,6 @@ const devServer = () => {
 const SCSS = () => {
   return {
     test: /\.scss$/,
-    include: path.resolve(__dirname, settings.paths.src.base),
     exclude: /node_modules/,
     use: [
       {
@@ -91,12 +76,10 @@ const SCSS = () => {
         options: {
           postcssOptions: {
             plugins: [
-              /* eslint-disable */
               require('autoprefixer')({
                 env: 'modern',
                 cascade: false
               })
-              /* eslint-enable */
             ]
           }
         }
@@ -124,15 +107,6 @@ const development = {
   plugins: [
     // Hot Module Replacement Plugin
     new webpack.HotModuleReplacementPlugin(),
-
-    // Friendly Errors Webpack Plugin
-    new FriendlyErrorsWebpackPlugin({
-      compilationSuccessInfo: {
-        messages: ['Your application is running at: localhost:8080'],
-        notes: ['Hot reloading is enabled.']
-      },
-      clearConsole: true
-    }),
 
     // HTML Webpack Plugin - Index
     new HtmlWebpackPlugin({

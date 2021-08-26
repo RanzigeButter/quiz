@@ -2,59 +2,20 @@
     # Webpack - Settings
     ========================================================================  */
 
-/**
- * Table of Contents:
- *
- * General
- * URLs
- * Paths
- * Entries
- * Copy
- * Development Server
- */
-
 // DotEnv
 require('dotenv').config();
 
 module.exports = {
-  // General
-  // ===========================================================================
-
-  name: 'projects.timschneider.xyz/quiz/',
-
-  // URLs
-  // ===========================================================================
-
   urls: {
     dev: '/',
     prod: 'https://projects.timschneider.xyz/quiz/',
-    puplicPath: 'dist/'
+    publicPath: 'dist/'
   },
-
-  // Paths
-  // ===========================================================================
-
-  paths: {
-    src: {
-      base: './src/'
-    },
-    dist: {
-      base: './dist/',
-      clean: ['**/*']
-    },
-    templates: './src/templates/'
-  },
-
-  // Entries
-  // ===========================================================================
 
   entries: {
     app: ['./src/js/main.js', './src/css/main.scss'],
     quiz: './src/quiz/quiz.jsx'
   },
-
-  // Copy
-  // ===========================================================================
 
   copy: [
     // Favicons
@@ -64,9 +25,6 @@ module.exports = {
       noErrorOnMissing: true
     }
   ],
-
-  // Development Server
-  // ===========================================================================
 
   developmentServer: {
     public: () => {
